@@ -7,42 +7,38 @@
  */
 
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-  View,
-} from 'react-native';
 import UserProfile from './usuario/UserProfile';
+import Camera from './usuario/Camera';
+import Pagamentos from './usuario/Pagamentos';
+import Planos from './usuario/Planos';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+const HomeTabs = () => {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <UserProfile />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <Tab.Navigator>
+      <Tab.Screen name="Perfil" component={UserProfile} />
+      <Tab.Screen name="Camera" component={Camera} />
+      <Tab.Screen name="Pagamentos" component={Pagamentos} />
+    </Tab.Navigator>
   );
-}
+};
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="Perfil" component={UserProfile} />
+        <Stack.Screen name="Camera" component={Camera} />
+        <Stack.Screen name="Planos" component={Planos} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default App;
